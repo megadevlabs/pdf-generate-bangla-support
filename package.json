@@ -1,0 +1,27 @@
+{
+  "name": "pdf-generate",
+  "version": "0.0.1",
+  "description": "Dynamic PDF file generate with Bangla support",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bilashcse/pdf-generate-bangla-support.git"
+  },
+  "keywords": [
+    "pdf",
+    "pdf-generate",
+    "bangla-pdf"
+  ],
+  "author": "Bilash",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bilashcse/pdf-generate-bangla-support/issues"
+  },
+  "homepage": "https://github.com/bilashcse/pdf-generate-bangla-support#readme",
+  "dependencies": {
+    "express": "^4.14.1"
+  }
+}
