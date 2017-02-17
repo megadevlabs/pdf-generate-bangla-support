@@ -11,9 +11,11 @@ var app = express();
 var exporter = new ElectronPDF();
 
 app.set('view engine', 'ejs');
+
 app.get('/download',  function (req, res) {
 	var input = __dirname+'/index.html';
 	var output = __dirname+'/output.pdf';
+	
 	return new promise(function(resolve,reject){
 		return generatePDF(input, output)
 		.then(function(pdfUrl){
@@ -25,26 +27,48 @@ app.get('/download',  function (req, res) {
 	});	
 });
 
+app.get('/dynamic/pdf',function(req,res){
+
+	var input = __dirname+'/dynamic.html';
+	var output = __dirname+'/dynamic.pdf';
+	var temp = __dirname+'/temp.pdf';
+	var data = {
+		name : 'Test Person',
+		mobile : '01717346500'
+	}
+
+	return new promise(function(resolve, reject){
+		return generateDynamicHtml(data,input,temp)
+		.then(function(url){
+			return generatePDF(url, output);
+		}).then(function(result){
+			console.log("PDF conversion Done. URL : ", result);
+			resolve(true);
+		}).catch(function(err){
+			reject(err);
+		})
+	})
+})
 
 
-// function generateDynamicHtml(invoice, htmlUrl, output){
+
+function generateDynamicHtml(data, htmlUrl, output){
 	
-// 	return new promise(function(resolve, reject){
-// 		console.log(invoice)
-// 		return ejs.renderFile(htmlUrl, { invoice : invoice },function (err, html) {
-// 			if(err)
-// 				reject(new Error(err.message));
-// 			else if(html){
-// 				fs.writeFile(output,html, function (err) {
-// 					if(err)
-// 						reject(new Error(err.message));
-// 					else
-// 						resolve(output);
-// 				});
-// 			}
-// 		});
-// 	});
-// }
+	return new promise(function(resolve, reject){
+		return ejs.renderFile(htmlUrl, { data : data },function (err, html) {
+			if(err)
+				reject(new Error(err.message));
+			else if(html){
+				fs.writeFile(output,html, function (err) {
+					if(err)
+						reject(new Error(err.message));
+					else
+						resolve(output);
+				});
+			}
+		});
+	});
+}
 
 function generatePDF(input, output){
 	var jobOptions = {
